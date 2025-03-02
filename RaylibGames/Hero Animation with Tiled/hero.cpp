@@ -149,16 +149,15 @@ void keepPlayerInScreen(Player *player) {
 void checkTileCollisions(TmxMap *map, Player *player) {
   for (unsigned int i = 0; i < map->layersLength; i++) {
     TraceLog(LOG_DEBUG, "current layer is %d: %s", i, map->layers[i].name);
-    if (strcmp(map->layers[i].name, "collisions") == 0 && map->layers[i].type == LAYER_TYPE_OBJECT_GROUP) {
-      TmxObject* col;
-      if (CheckCollisionTMXObjectGroupRec(map->layers[i].exact.objectGroup,
-                                          player->rect,
-                                          col)) {
-        TraceLog(LOG_DEBUG, "We've made contact!");
-        player->vel.y = 0.0f;
-        player->rect.y = (col->aabb.y - player->rect.height);
-        // player->rect.y = (H - player->rect.height);
-      }
+    if (strcmp(map->layers[i].name, "collisions") == 0 && map->layers[i].type == LAYER_TYPE_OBJECT_GROUP) 
+    {
+        TmxObject col;
+        if (CheckCollisionTMXObjectGroupRec(map->layers[i].exact.objectGroup, player->rect, &col))
+        {
+            TraceLog(LOG_DEBUG, "We've made contact!");
+            player->vel.y = 0.0f;
+            player->rect.y = (col.aabb.y - player->rect.height);
+        }
     }
   }
   return;
